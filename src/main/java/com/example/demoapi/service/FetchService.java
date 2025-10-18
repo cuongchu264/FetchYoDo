@@ -90,7 +90,6 @@ public class FetchService {
             if (response == null) return new ProductInfo(false, false);;
 
             String body = EntityUtils.toString(response.getEntity());
-            System.out.println("Yodobashi raw response: " + body);
             Pattern pattern = Pattern.compile("\\{.*\\}", Pattern.DOTALL);
             Matcher matcher = pattern.matcher(body);
             if (!matcher.find()) return new ProductInfo(false, false);
