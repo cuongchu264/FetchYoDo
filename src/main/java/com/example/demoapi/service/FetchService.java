@@ -55,7 +55,7 @@ public class FetchService {
 
         try (CloseableHttpResponse resp = httpClient.execute(get)) {
             EntityUtils.consumeQuietly(resp.getEntity());
-            System.out.println("Cookies refreshed: " + cookieStore.getCookies());
+            System.out.println("Cookies refreshed!");
         } catch (Exception e) {
             e.printStackTrace();
         }
