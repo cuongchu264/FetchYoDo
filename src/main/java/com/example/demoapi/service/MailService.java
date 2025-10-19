@@ -34,8 +34,6 @@ public class MailService {
             request.setBody(mail.build());
             Response response = sg.api(request);
             System.out.println("Status Code: " + response.getStatusCode());
-            System.out.println("Body: " + response.getBody());
-            System.out.println("Headers: " + response.getHeaders());
         } catch (IOException ex) {
             throw ex;
         }
