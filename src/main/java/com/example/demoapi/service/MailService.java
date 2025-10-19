@@ -23,17 +23,40 @@ public class MailService {
     public void sendEmail(String to, String subject, String contentText) throws IOException {
         Email from = new Email(senderEmail, senderName);
         Email toEmail = new Email(to);
-        Content content = new Content("text/html", contentText);
+
+        String htmlContent = """
+                <html>
+                  <body style="font-family: Arial, sans-serif; color: #222;">
+                    <h3 style="color:#0066cc;">🔔 Product Notification</h3>
+                    <p>%s</p>
+                    <br/>
+                    <hr/>
+                    <p style="font-size: 12px; color: #888;">
+                      This is an automated notification from <b>FetchYoDo</b>.<br/>
+                      Please do not reply to this email.
+                    </p>
+                  </body>
+                </html>
+                """.formatted(contentText.replace("\n", "<br/>"));
+
+        Content content = new Content("text/html", htmlContent);
         Mail mail = new Mail(from, subject, toEmail, content);
+
+        mail.personalization.get(0).addHeader("X-Entity-Ref-ID", "FetchYoDo-Product-Notification");
 
         SendGrid sg = new SendGrid(sendgridApiKey);
         Request request = new Request();
+
         try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sg.api(request);
-            System.out.println("Status Code: " + response.getStatusCode());
+
+            System.out.println("Status send mail: " + response.getStatusCode());
+            if (response.getStatusCode() >= 400) {
+                System.err.println("Error Body: " + response.getBody());
+            }
         } catch (IOException ex) {
             throw ex;
         }
