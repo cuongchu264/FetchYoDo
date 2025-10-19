@@ -27,6 +27,8 @@ public class ProductCheckService {
                     + "https://www.yodobashi.com/product/" + productId + "/";
 
             mailService.sendEmail(email, "Product Notification", body);
+        } else {
+            System.out.println("No product available!");
         }
     }
 }
