@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api")
 public class FetchController {
@@ -25,7 +27,7 @@ public class FetchController {
     }
 
     @GetMapping("/checkProduct/{productId}")
-    public String checkProduct(@PathVariable("productId") String productId) {
+    public String checkProduct(@PathVariable("productId") String productId) throws IOException {
         productCheckService.checkAndNotify(productId, "cuongchu12369@gmail.com");
         return "Check completed. If any flag is true, mail has been sent.";
     }
