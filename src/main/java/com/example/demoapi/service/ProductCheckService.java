@@ -3,6 +3,8 @@ package com.example.demoapi.service;
 import com.example.demoapi.model.ProductInfo;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class ProductCheckService {
 
@@ -14,7 +16,7 @@ public class ProductCheckService {
         this.mailService = mailService;
     }
 
-    public void checkAndNotify(final String productId, final String email) {
+    public void checkAndNotify(final String productId, final String email) throws IOException {
         ProductInfo info = fetchService.fetchProductInfo(productId);
 
         if (info.isDisplayBuyboxSub() || info.isEnableDeliveryTag()) {
@@ -24,7 +26,7 @@ public class ProductCheckService {
                     + "The product has been opened \n"
                     + "https://www.yodobashi.com/product/" + productId + "/";
 
-            mailService.sendNotification(email, "Product Notification", body);
+            mailService.sendEmail(email, "Product Notification", body);
         }
     }
 }
