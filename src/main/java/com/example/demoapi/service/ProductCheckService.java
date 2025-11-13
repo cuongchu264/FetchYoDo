@@ -21,12 +21,13 @@ public class ProductCheckService {
 
         if (info.isDisplayBuyboxSub() || info.isEnableDeliveryTag()) {
             String body = "Product SKU: " + productId + "\n"
+                    + "Product name: " + info.getProductName() + "\n"
                     + "isDisplayBuyboxSub: " + info.isDisplayBuyboxSub() + "\n"
                     + "isEnableDeliveryTag: " + info.isEnableDeliveryTag() + "\n"
                     + "The product has been opened \n"
                     + "https://www.yodobashi.com/product/" + productId + "/";
 
-            mailService.sendEmail(email, "Product Notification", body);
+            mailService.sendEmail(email, "Product " + info.getProductName() + " has opened", body);
         } else {
             System.out.println("No product available!");
         }

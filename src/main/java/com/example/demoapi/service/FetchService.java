@@ -9,9 +9,11 @@ import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,31 +89,35 @@ public class FetchService {
 
             var response = httpClient.execute(request);
 
-            if (response == null) return new ProductInfo(false, false);;
+            if (response == null) return new ProductInfo(false, false, "");
 
-            String body = EntityUtils.toString(response.getEntity());
+            HttpEntity entity = response.getEntity();
+            byte[] bytes = EntityUtils.toByteArray(entity);
+            String body = new String(bytes, StandardCharsets.UTF_8);
+
             Pattern pattern = Pattern.compile("\\{.*\\}", Pattern.DOTALL);
             Matcher matcher = pattern.matcher(body);
-            if (!matcher.find()) return new ProductInfo(false, false);
+            if (!matcher.find()) return new ProductInfo(false, false, "");
             String json = matcher.group(0);
 
             JsonNode root = objectMapper.readTree(json);
             JsonNode products = root.path("products");
             if (products.isArray()) {
                 for (JsonNode product : products) {
-                    String sku = product.path("sku").asText();
                     if (productId.equals(product.path("sku").asText())) {
                         boolean displayBuyboxSub = product.path("isDisplayBuyboxSub").asBoolean(false);
                         boolean enableDeliveryTag = product.path("isEnableDeliveryTag").asBoolean(false);
-                        return new ProductInfo(displayBuyboxSub, enableDeliveryTag);
+                        String productNameRaw = product.path("productName").asText();
+                        String productName = productNameRaw.replaceAll("<br\\s*/?>", " ");
+                        return new ProductInfo(displayBuyboxSub, enableDeliveryTag, productName);
                     }
                 }
             }
 
-            return new ProductInfo(false, false);
+            return new ProductInfo(false, false, "");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ProductInfo(false, false);
+            return new ProductInfo(false, false, "");
         }
     }
 }
