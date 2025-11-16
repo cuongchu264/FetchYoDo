@@ -27,6 +27,7 @@ public class ProductCheckService {
                     + "point: " + info.getPoint() + "\n"
                     + "point Price: " + info.getPointRate() + "\n"
                     + "point Rate: " + info.getPointRate() + "\n"
+                    + "deliveryDateText: " + info.getDeliveryDateText() + "\n"
                     + "The product has been opened \n"
                     + "https://www.yodobashi.com/product/" + productId + "/";
 

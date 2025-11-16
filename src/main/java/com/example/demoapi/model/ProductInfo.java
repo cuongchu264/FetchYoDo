@@ -7,14 +7,16 @@ public class ProductInfo {
     private final String point;
     private final String pointPrice;
     private final String pointRate;
+    private final String deliveryDateText;
 
-    public ProductInfo(boolean isDisplayBuyboxSub, boolean isEnableDeliveryTag, String productName, String point, String pointPrice, String pointRate) {
+    public ProductInfo(boolean isDisplayBuyboxSub, boolean isEnableDeliveryTag, String productName, String point, String pointPrice, String pointRate,String deliveryDateText) {
         this.isDisplayBuyboxSub = isDisplayBuyboxSub;
         this.isEnableDeliveryTag = isEnableDeliveryTag;
         this.productName = productName;
         this.point = point;
         this.pointPrice = pointPrice;
         this.pointRate = pointRate;
+        this.deliveryDateText = deliveryDateText;
     }
 
     public boolean isDisplayBuyboxSub() {
@@ -39,5 +41,7 @@ public class ProductInfo {
 
     public String getPointRate() {
         return pointRate;
+    }
+    public String getDeliveryDateText() {return deliveryDateText;
     }
 }

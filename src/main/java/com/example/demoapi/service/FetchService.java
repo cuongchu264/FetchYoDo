@@ -89,7 +89,7 @@ public class FetchService {
 
             var response = httpClient.execute(request);
 
-            if (response == null) return new ProductInfo(false, false, "", "", "", "");
+            if (response == null) return new ProductInfo(false, false, "", "", "", "","");
 
             HttpEntity entity = response.getEntity();
             byte[] bytes = EntityUtils.toByteArray(entity);
@@ -97,7 +97,8 @@ public class FetchService {
 
             Pattern pattern = Pattern.compile("\\{.*\\}", Pattern.DOTALL);
             Matcher matcher = pattern.matcher(body);
-            if (!matcher.find()) return new ProductInfo(false, false, "", "", "", "");
+            if (!matcher.find()) return new ProductInfo(false, false, "", "", "", "","" +
+                    "");
             String json = matcher.group(0);
 
             JsonNode root = objectMapper.readTree(json);
@@ -112,15 +113,16 @@ public class FetchService {
                         String point = product.path("point").asText();
                         String pointPrice = product.path("pointPrice").asText();
                         String pointRate = product.path("pointRate").asText();
-                        return new ProductInfo(displayBuyboxSub, enableDeliveryTag, productName, point, pointPrice, pointRate);
+                        String deliveryDateText = product.path("deliveryDateText").asText();
+                        return new ProductInfo(displayBuyboxSub, enableDeliveryTag, productName, point, pointPrice, pointRate,deliveryDateText);
                     }
                 }
             }
 
-            return new ProductInfo(false, false, "", "", "", "");
+            return new ProductInfo(false, false, "", "", "", "","");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ProductInfo(false, false, "", "", "", "");
+            return new ProductInfo(false, false, "", "", "", "","");
         }
     }
 }
