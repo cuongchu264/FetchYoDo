@@ -24,6 +24,9 @@ public class ProductCheckService {
                     + "Product name: " + info.getProductName() + "\n"
                     + "isDisplayBuyboxSub: " + info.isDisplayBuyboxSub() + "\n"
                     + "isEnableDeliveryTag: " + info.isEnableDeliveryTag() + "\n"
+                    + "point: " + info.getPoint() + "\n"
+                    + "point Price: " + info.getPointRate() + "\n"
+                    + "point Rate: " + info.getPointRate() + "\n"
                     + "The product has been opened \n"
                     + "https://www.yodobashi.com/product/" + productId + "/";
 
